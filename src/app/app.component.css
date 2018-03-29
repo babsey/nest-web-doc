@@ -1,0 +1,15 @@
+mat-sidenav {
+  background-color: rgb(250, 250, 250) !important;
+}
+
+mat-sidenav {
+  width: 350px;
+}
+
+mat-sidenav-content {
+  padding: 0 20px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

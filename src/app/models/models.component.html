@@ -1,0 +1,18 @@
+<mat-form-field>
+  <mat-select placeholder="Model type" [(value)]="mtype" (change)="getModels()">
+    <mat-option>all</mat-option>
+    <mat-option *ngFor="let mtype of mtypes" [value]="mtype">
+      {{ mtype }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+<mat-form-field>
+  <input matInput type="text" [(ngModel)]="term" placeholder="Filter models">
+</mat-form-field>
+<mat-nav-list>
+  <a mat-list-item *ngFor="let model of models | filterModels : term" (click)="onClick(model)">
+  {{ model }}
+</a>
+</mat-nav-list>

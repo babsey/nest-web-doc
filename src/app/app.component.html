@@ -1,0 +1,39 @@
+<mat-toolbar color="accent">
+<button mat-raised-button (click)="snavl.toggle()">Objects</button>
+<span class="spacer"></span>
+<h1 class="app-name">{{ title }}</h1>
+<span class="spacer"></span>
+<button mat-raised-button (click)="snavr.toggle()" [disabled]="!hasDefaults">Default values</button>
+</mat-toolbar>
+
+<mat-sidenav-container id="content" [style.height]="height" (window:resize)="resize()">
+  <mat-sidenav #snavl role="region" [mode]="mobileQuery.matches ? 'over' : 'side'" opened="true" position="start">
+    <mat-tab-group>
+      <mat-tab label="Models">
+        <div class="tab-content">
+          <app-models [selected]="selected" (selectedChange)="changed($event)"></app-models>
+        </div>
+      </mat-tab>
+      <mat-tab label="Commands">
+         <div class="tab-content">
+          <app-commands [selected]="selected" (selectedChange)="changed($event)"></app-commands>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <h1>{{ selected | label }}</h1>
+    <pre>{{ helptext }}</pre>
+  </mat-sidenav-content>
+
+  <mat-sidenav #snavr role="region" [mode]="mobileQuery.matches ? 'over' : 'side'" [(opened)]="viewDefaults" position="end">
+    <h4>Default values for {{defaults.model || defaults.synapse_model }} </h4>
+    <table>
+      <tr *ngFor="let default of defaults | keys">
+        <td>{{default.key}}</td>
+        <td>{{default.value}}</td>
+      </tr>
+    </table>
+  </mat-sidenav>
+</mat-sidenav-container>
