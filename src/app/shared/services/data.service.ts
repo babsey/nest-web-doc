@@ -7,27 +7,35 @@ import { Configuration } from "../../app.constants"
 export class DataService {
     private nestAPI: string;
 
-  constructor(private http: HttpClient, private config: Configuration) {
-      this.nestAPI = config.ServerWithApiUrl;
-  }
-
-  public commands() {
-    return this.http.get(this.nestAPI + 'help?return_text=true&obj=helpindex')
-  }
-
-  public models(mtype) {
-    if (mtype) {
-        return this.http.get(this.nestAPI + 'Models?mtype=' + mtype)
-    } else {
-        return this.http.get(this.nestAPI + 'Models')
+    constructor(private http: HttpClient, private config: Configuration) {
+        this.nestAPI = config.ServerWithApiUrl;
     }
-  }
 
-  public getDefaults(model) {
-    return this.http.get(this.nestAPI + 'GetDefaults?model='+ model)
-  }
+    public commandsSLI() {
+        return this.http.get(this.nestAPI + 'help?return_text=true&obj=helpindex')
+    }
 
-  public help(model) {
-    return this.http.get(this.nestAPI + 'help?return_text=true&obj='+ model)
-  }
+    public commandsPyNEST() {
+        return this.http.get(this.nestAPI + '__dict__')
+    }
+
+    public models(mtype) {
+        if (mtype) {
+            return this.http.get(this.nestAPI + 'Models?mtype=' + mtype)
+        } else {
+            return this.http.get(this.nestAPI + 'Models')
+        }
+    }
+
+    public getDefaults(model) {
+        return this.http.get(this.nestAPI + 'GetDefaults?model=' + model)
+    }
+
+    public help(model) {
+        return this.http.get(this.nestAPI + 'help?return_text=true&obj=' + model)
+    }
+
+    public doc(command) {
+        return this.http.get(this.nestAPI + command + '?return_doc=true')
+    }
 }

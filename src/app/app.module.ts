@@ -5,15 +5,15 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  MatButtonModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatTabsModule,
-  MatTooltipModule,
-  MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatTabsModule,
+    MatTooltipModule,
+    MatToolbarModule,
 } from '@angular/material';
 
 import { DataService } from './shared/services/data.service';
@@ -28,34 +28,34 @@ import { CommandsComponent } from './commands/commands.component';
 import { Configuration } from './app.constants';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CommandsComponent,
-    FilterCommandsPipe,
-    FilterModelsPipe,
-    KeysPipe,
-    LabelPipe,
-    ModelsComponent,
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    HttpClientModule,
-    MatButtonModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatTabsModule,
-    MatTooltipModule,
-    MatToolbarModule,
-  ],
-  providers: [
-      Configuration,
-      DataService,
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        CommandsComponent,
+        FilterCommandsPipe,
+        FilterModelsPipe,
+        KeysPipe,
+        LabelPipe,
+        ModelsComponent,
+    ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        HttpClientModule,
+        MatButtonModule,
+        MatIconModule,
+        MatInputModule,
+        MatListModule,
+        MatSelectModule,
+        MatSidenavModule,
+        MatTabsModule,
+        MatTooltipModule,
+        MatToolbarModule,
+    ],
+    providers: [
+        Configuration,
+        DataService,
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

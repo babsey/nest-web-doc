@@ -1,8 +1,17 @@
 <mat-form-field>
-  <input matInput type="text" [(ngModel)]="term" placeholder="Filter commands">
+  <mat-select placeholder="Language" [(value)]="language" (change)="getCommands()">
+    <mat-option value="SLI">SLI</mat-option>
+    <mat-option value="PyNEST">PyNEST</mat-option>
+  </mat-select>
 </mat-form-field>
+
+
+<mat-form-field>
+  <input matInput type="text" [(ngModel)]="filterTerm" placeholder="Filter commands">
+</mat-form-field>
+
 <mat-nav-list>
-  <a mat-list-item *ngFor="let command of commands | filterCommands : term" (click)="onClick(command[0])"
+  <a mat-list-item *ngFor="let command of commands | filterCommands : filterTerm" (click)="onClick(command[0])"
    matTooltip="{{command[1]}}" matTooltipPosition="after">
   {{ command[0] }}
 </a>
