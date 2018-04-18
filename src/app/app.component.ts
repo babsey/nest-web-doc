@@ -36,47 +36,36 @@ export class AppComponent implements OnInit {
     }
 
     resize() {
-        this.height = (window.innerHeight - document.getElementById('content').offsetTop).toString() + 'px';
+        this.height = (window.innerHeight - document.getElementById('content')
+            .offsetTop).toString() + 'px';
     }
 
     changed(events) {
-        let grp = events[0];
-        this.selected = events[1];
-        let helpOrDoc = events[2];
+        this.selected = events[0];
+        let helpOrDoc = events[1];
         if (helpOrDoc == 'help') {
-            this._dataService.help(this.selected)
-                .subscribe(
-                data => {
-                    if (data['status'] == 'ok' && 'response' in data) {
-                        this.helptext = data['response'];
-                    } else {
-                        this.helptext = 'No help found.';
-                    }
-                },
-                error => this.helptext = 'No help found.'
-                )
+            var responseJSON = this._dataService.getHelp(this.selected);
         } else {
-            this._dataService.doc(this.selected)
-                .subscribe(
-                data => {
-                    if (data['status'] == 'ok' && '__doc__' in data) {
-                        this.helptext = data['__doc__'];
-                    } else {
-                        this.helptext = 'No doc found.';
-                    }
-                },
-                error => this.helptext = 'No doc found.'
-                )
+            var responseJSON = this._dataService.getDoc(this.selected);
         }
+        var key = helpOrDoc == 'help' ? 'response' : '__doc__';
+        var errorText = 'No ' + helpOrDoc + ' found.';
+        responseJSON.subscribe(
+            data => {
+                this.helptext = ((data['status'] == 'ok'
+                    && key in data)
+                    ? data[key] : errorText);
+            },
+            error => this.helptext = errorText
+        )
 
-        if (this.selected == 'sli_neuron' || grp == 'command') {
+        if (this._dataService.modelsDefaultValues.indexOf(this.selected) == -1) {
             this.defaults = {};
             this.hasDefaults = false;
             this.viewDefaults = false;
         } else {
             this._dataService.getDefaults(this.selected)
-                .subscribe(
-                data => {
+                .subscribe(data => {
                     this.defaults = data['response'];
                     this.hasDefaults = true;
                 })

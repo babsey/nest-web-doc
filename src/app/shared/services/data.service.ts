@@ -5,37 +5,38 @@ import { Configuration } from "../../app.constants"
 
 @Injectable()
 export class DataService {
-    private nestAPI: string;
+    public modelsDefaultValues: any;
+    private nestServerUrl: string;
 
     constructor(private http: HttpClient, private config: Configuration) {
-        this.nestAPI = config.ServerWithApiUrl;
+        this.nestServerUrl = config.ServerWithApiUrl;
+        this.getModels(null).subscribe((data) => {
+            this.modelsDefaultValues = data['response'].filter((d) => d != 'sli_neuron');
+        });
     }
 
-    public commandsSLI() {
-        return this.http.get(this.nestAPI + 'help?return_text=true&obj=helpindex')
+    public getCommands(language) {
+        return this.http.get(this.nestServerUrl
+            + ((language == 'PyNEST') ?
+            '__dict__' : 'help?return_text=true&obj=helpindex'))
     }
 
-    public commandsPyNEST() {
-        return this.http.get(this.nestAPI + '__dict__')
-    }
-
-    public models(mtype) {
-        if (mtype) {
-            return this.http.get(this.nestAPI + 'Models?mtype=' + mtype)
-        } else {
-            return this.http.get(this.nestAPI + 'Models')
-        }
+    public getModels(mtype) {
+        return this.http.get(this.nestServerUrl + 'Models'
+            + (mtype ? '?mtype=' + mtype : ''))
     }
 
     public getDefaults(model) {
-        return this.http.get(this.nestAPI + 'GetDefaults?model=' + model)
+        if (this.modelsDefaultValues.indexOf(model) != -1) {
+            return this.http.get(this.nestServerUrl + 'GetDefaults?model=' + model)
+        }
     }
 
-    public help(model) {
-        return this.http.get(this.nestAPI + 'help?return_text=true&obj=' + model)
+    public getHelp(model) {
+        return this.http.get(this.nestServerUrl + 'help?return_text=true&obj=' + model)
     }
 
-    public doc(command) {
-        return this.http.get(this.nestAPI + command + '?return_doc=true')
+    public getDoc(command) {
+        return this.http.get(this.nestServerUrl + command + '?return_doc=true')
     }
 }

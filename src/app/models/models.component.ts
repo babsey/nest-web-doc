@@ -25,7 +25,7 @@ export class ModelsComponent implements OnInit {
     }
 
     getModels() {
-        this._dataService.models(this.mtype)
+        this._dataService.getModels(this.mtype)
             .subscribe(data => {
                 this.models = data['response'];
             })
@@ -33,7 +33,7 @@ export class ModelsComponent implements OnInit {
 
     onClick(selected) {
         this.selected = selected;
-        this.selectedChange.emit(['model', this.selected, 'help']);
+        this.selectedChange.emit([this.selected, 'help']);
     }
 
 }

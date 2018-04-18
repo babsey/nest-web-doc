@@ -23,34 +23,24 @@ export class CommandsComponent implements OnInit {
     }
 
     getCommands() {
-        if (this.language == 'SLI') {
-            this._dataService.commandsSLI()
-                .subscribe(data => {
-                    let res = data['response'];
-                    let a = res.split('\n').sort();
-                    let b = a.map((i) => {
-                        let c = i.split('\t')
-                        return [c[0], c[c.length - 1]]
-                    })
-                    this.commands = b;
-                })
-        } else {
-            this._dataService.commandsPyNEST()
-                .subscribe(data => {
-                    let res = data['response'].sort();
-                    let b = res.map((i) => {
-                        let c = i.split('\t')
-                        return [c[0], '']
-                    })
-                    this.commands = b;
-                })
-        }
-
+        this._dataService.getCommands(this.language)
+            .subscribe(data => {
+                if (this.language == 'PyNEST') {
+                    this.commands = data['response'].sort().map((i) => [i.split('\t')[0], ''])
+                } else {
+                    this.commands = data['response'].split('\n').sort()
+                        .map((i) => {
+                            let c = i.split('\t')
+                            return [c[0], c[c.length - 1]]
+                        })
+                }
+            })
     }
+
 
     onClick(selected) {
         this.selected = selected;
-        this.selectedChange.emit(['command', this.selected, this.language == 'SLI' ? 'help' : 'doc']);
+        this.selectedChange.emit([selected, this.language == 'SLI' ? 'help' : 'doc']);
     }
 
 }
