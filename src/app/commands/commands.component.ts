@@ -10,7 +10,7 @@ import { DataService } from '../shared/services/data.service';
 export class CommandsComponent implements OnInit {
     @Input() selected: string = '';
     @Output() selectedChange: EventEmitter<any[]> = new EventEmitter<any[]>();
-    public language: string = 'SLI';
+    public interface: string = 'SLI';
     public commands: any[] = [];
     public filterTerm: string;
 
@@ -23,24 +23,27 @@ export class CommandsComponent implements OnInit {
     }
 
     getCommands() {
-        this._dataService.getCommands(this.language)
+        this._dataService.getCommands(this.interface)
             .subscribe(data => {
-                if (this.language == 'PyNEST') {
-                    this.commands = data['response'].sort().map((i) => [i.split('\t')[0], ''])
-                } else {
-                    this.commands = data['response'].split('\n').sort()
+                if (this.interface == 'SLI') {
+                    this.commands = data['response']
+                        .split('\n')
+                        .sort()
                         .map((i) => {
                             let c = i.split('\t')
                             return [c[0], c[c.length - 1]]
                         })
+                } else {
+                    this.commands = data['response']
+                        .sort()
+                        .map((i) => [i.split('\t')[0], ''])
                 }
             })
     }
 
-
     onClick(selected) {
         this.selected = selected;
-        this.selectedChange.emit([selected, this.language == 'SLI' ? 'help' : 'doc']);
+        this.selectedChange.emit([selected, this.interface == 'SLI' ? 'help' : 'doc']);
     }
 
 }

@@ -6,37 +6,39 @@ import { Configuration } from "../../app.constants"
 @Injectable()
 export class DataService {
     public modelsDefaultValues: any;
-    private nestServerUrl: string;
+    private url: any = 'nest/';
 
     constructor(private http: HttpClient, private config: Configuration) {
-        this.nestServerUrl = config.ServerWithApiUrl;
         this.getModels(null).subscribe((data) => {
             this.modelsDefaultValues = data['response'].filter((d) => d != 'sli_neuron');
         });
     }
 
-    public getCommands(language) {
-        return this.http.get(this.nestServerUrl
-            + ((language == 'PyNEST') ?
-            '__dict__' : 'help?return_text=true&obj=helpindex'))
+    public getCommands(mode) {
+        this.url = (mode == 'PyNEST_topology' ? 'nest_topology/' : 'nest/');
+        return this.http.get(this.config.nestServerUrl + this.url
+            + ((mode.startsWith('PyNEST')) ?
+                '__dict__' : 'help?return_text=true&obj=helpindex')
+        );
     }
 
     public getModels(mtype) {
-        return this.http.get(this.nestServerUrl + 'Models'
+        return this.http.get(this.config.nestServerUrl + 'nest/Models'
             + (mtype ? '?mtype=' + mtype : ''))
     }
 
     public getDefaults(model) {
         if (this.modelsDefaultValues.indexOf(model) != -1) {
-            return this.http.get(this.nestServerUrl + 'GetDefaults?model=' + model)
+            return this.http.get(this.config.nestServerUrl + 'nest/GetDefaults?model=' + model)
         }
     }
 
     public getHelp(model) {
-        return this.http.get(this.nestServerUrl + 'help?return_text=true&obj=' + model)
+        return this.http.get(this.config.nestServerUrl + 'nest/help?return_text=true&obj=' + model)
     }
 
     public getDoc(command) {
-        return this.http.get(this.nestServerUrl + command + '?return_doc=true')
+        return this.http.get(this.config.nestServerUrl + this.url + command + '?return_doc=true')
     }
+
 }
