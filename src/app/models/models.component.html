@@ -1,5 +1,5 @@
 <mat-form-field>
-    <mat-select placeholder="Model type" [(value)]="mtype" (change)="getModels()">
+    <mat-select placeholder="Model type" [(value)]="mtype" (selectionChange)="getModels()">
         <mat-option>all</mat-option>
         <mat-option *ngFor="let mtype of mtypes" [value]="mtype">
             {{ mtype }}

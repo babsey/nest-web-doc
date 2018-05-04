@@ -8,7 +8,7 @@ import { DataService } from '../shared/services/data.service';
     styleUrls: ['./models.component.css']
 })
 export class ModelsComponent implements OnInit {
-    @Input() selected: string = '';
+    @Input() selected: string;
     @Output() selectedChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     public filterModels: string;
     public models: any[] = [];

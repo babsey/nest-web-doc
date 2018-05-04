@@ -1,5 +1,5 @@
 <mat-form-field>
-    <mat-select placeholder="Interface" [(value)]="interface" (change)="getCommands()">
+    <mat-select placeholder="Interface" [(value)]="interface" (selectionChange)="getCommands()">
         <mat-option value="SLI">SLI</mat-option>
         <mat-option value="PyNEST">PyNEST</mat-option>
         <mat-option value="PyNEST_topology">PyNEST Topology</mat-option>

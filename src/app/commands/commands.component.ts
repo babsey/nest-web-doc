@@ -8,9 +8,9 @@ import { DataService } from '../shared/services/data.service';
     styleUrls: ['./commands.component.css']
 })
 export class CommandsComponent implements OnInit {
-    @Input() selected: string = '';
+    @Input() selected: string;
     @Output() selectedChange: EventEmitter<any[]> = new EventEmitter<any[]>();
-    public interface: string = 'SLI';
+    public interface: string;
     public commands: any[] = [];
     public filterCommands: string;
 
@@ -19,6 +19,7 @@ export class CommandsComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.interface = 'SLI';
         this.getCommands()
     }
 
