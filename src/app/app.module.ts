@@ -6,9 +6,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
     MatButtonModule,
+    MatCardModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
+    MatProgressBarModule,
     MatSelectModule,
     MatSidenavModule,
     MatTabsModule,
@@ -43,9 +45,11 @@ import { Configuration } from './app.constants';
         FormsModule,
         HttpClientModule,
         MatButtonModule,
+        MatCardModule,
         MatIconModule,
         MatInputModule,
         MatListModule,
+        MatProgressBarModule,
         MatSelectModule,
         MatSidenavModule,
         MatTabsModule,

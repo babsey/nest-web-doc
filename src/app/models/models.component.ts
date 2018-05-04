@@ -10,14 +10,14 @@ import { DataService } from '../shared/services/data.service';
 export class ModelsComponent implements OnInit {
     @Input() selected: string = '';
     @Output() selectedChange: EventEmitter<any[]> = new EventEmitter<any[]>();
-    public term: string;
+    public filterModels: string;
     public models: any[] = [];
     public mtypes: string[];
     public mtype: string = '';
 
 
     constructor(private _dataService: DataService) {
-        this.mtypes = ['nodes', 'synapses']
+        this.mtypes = ['nodes', 'synapses'];
     }
 
     ngOnInit() {
@@ -33,7 +33,7 @@ export class ModelsComponent implements OnInit {
 
     onClick(selected) {
         this.selected = selected;
-        this.selectedChange.emit([this.selected, 'help']);
+        this.selectedChange.emit(['Model', this.selected, 'help']);
     }
 
 }

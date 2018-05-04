@@ -1,18 +1,26 @@
 <mat-form-field>
-  <mat-select placeholder="Model type" [(value)]="mtype" (change)="getModels()">
-    <mat-option>all</mat-option>
-    <mat-option *ngFor="let mtype of mtypes" [value]="mtype">
-      {{ mtype }}
-    </mat-option>
-  </mat-select>
+    <mat-select placeholder="Model type" [(value)]="mtype" (change)="getModels()">
+        <mat-option>all</mat-option>
+        <mat-option *ngFor="let mtype of mtypes" [value]="mtype">
+            {{ mtype }}
+        </mat-option>
+    </mat-select>
 </mat-form-field>
-
 
 <mat-form-field>
-  <input matInput type="text" [(ngModel)]="term" placeholder="Filter models">
+    <i matPrefix class="material-icons">filter_list</i>
+    <input matInput type="text" [(ngModel)]="filterModels" placeholder="Filter models">
+    <button mat-button *ngIf="filterModels" matSuffix mat-icon-button aria-label="Clear" (click)="filterModels=''">
+        <mat-icon>close</mat-icon>
+    </button>
 </mat-form-field>
-<mat-nav-list>
-  <a mat-list-item *ngFor="let model of models | filterModels : term" (click)="onClick(model)">
-  {{ model }}
-</a>
-</mat-nav-list>
+
+<mat-card>
+    <mat-card-content>
+        <mat-nav-list>
+            <a mat-list-item *ngFor="let model of models | filterModels: filterModels" (click)="onClick(model)">
+                {{ model }}
+            </a>
+        </mat-nav-list>
+    </mat-card-content>
+</mat-card>

@@ -1,39 +1,96 @@
+<div class="progress-bar">
+    <mat-progress-bar *ngIf="progress" mode="query" ></mat-progress-bar>
+</div>
+
 <mat-toolbar color="accent">
-<button mat-raised-button (click)="snavl.toggle()">Objects</button>
-<span class="spacer"></span>
-<h1 class="app-name">{{ title }}</h1>
-<span class="spacer"></span>
-<button mat-raised-button (click)="snavr.toggle()" [disabled]="!hasDefaults">Default values</button>
+    <button *ngIf="!mobileQuery.matches" mat-raised-button (click)="snavl.toggle()">
+        <i class="material-icons" *ngIf="snavl.opened">chevron_left</i>
+        <i class="material-icons" *ngIf="!snavl.opened">chevron_right</i>
+        <span>Objects</span>
+    </button>
+    <button *ngIf="mobileQuery.matches" mat-icon-button (click)="snavr.close(); snavl.toggle()">
+        <i class="material-icons" *ngIf="snavl.opened">chevron_left</i>
+        <i class="material-icons" *ngIf="!snavl.opened">chevron_right</i>
+    </button>
+    <span class="spacer"></span>
+    <h1 class="app-name">{{ title }}</h1>
+    <span class="spacer"></span>
+    <button *ngIf="!mobileQuery.matches" mat-raised-button (click)="snavr.toggle()">
+        <i class="material-icons" *ngIf="snavr.opened && hasDefaults">chevron_right</i>
+        <i class="material-icons" *ngIf="!snavr.opened && hasDefaults">chevron_left</i>
+        <span *ngIf="hasDefaults">Defaults</span>
+    </button>
+    <button *ngIf="mobileQuery.matches" mat-icon-button (click)="snavl.close(); snavr.toggle()">
+        <i class="material-icons" *ngIf="snavr.opened && hasDefaults">chevron_right</i>
+        <i class="material-icons" *ngIf="!snavr.opened && hasDefaults">chevron_left</i>
+    </button>
 </mat-toolbar>
 
 <mat-sidenav-container id="content" [style.height]="height" (window:resize)="resize()">
-  <mat-sidenav #snavl role="region" [mode]="mobileQuery.matches ? 'over' : 'side'" opened="true" position="start">
-    <mat-tab-group>
-      <mat-tab label="Models">
-        <div class="tab-content">
-          <app-models [selected]="selected" (selectedChange)="changed($event)"></app-models>
-        </div>
-      </mat-tab>
-      <mat-tab label="Commands">
-         <div class="tab-content">
-          <app-commands [selected]="selected" (selectedChange)="changed($event)"></app-commands>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
-  </mat-sidenav>
+    <mat-sidenav #snavl role="region" [mode]="mobileQuery.matches ? 'over' : 'side'" opened="false" position="start">
+        <mat-tab-group>
+            <mat-tab label="Models">
+                <div class="tab-content">
+                    <app-models [selected]="selected" (selectedChange)="changed($event)"></app-models>
+                </div>
+            </mat-tab>
+            <mat-tab label="Commands">
+                <div class="tab-content">
+                    <app-commands [selected]="selected" (selectedChange)="changed($event)"></app-commands>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </mat-sidenav>
 
-  <mat-sidenav-content>
-    <h1>{{ selected | label }}</h1>
-    <pre>{{ helptext }}</pre>
-  </mat-sidenav-content>
+    <mat-sidenav-content class="content">
+        <mat-card *ngIf="!selected" style="max-width:450px;">
+            <mat-card-title>An online documentation for the NEST simulator</mat-card-title>
+            <mat-card-content>
+                <a href="http://www.nest-simulator.org/" target="_blank">
+                    <img src="../assets/img/nest_logo.png" style="width:150px">
+                </a>
+                <h3>Help me to orientate here</h3>
+                <p style="line-height: 1.5em">
+                    This is a web interface to get documentation of the NEST simulator.
+                    On top left corner you find a button to open the side navigation.
+                    On the left side you can select a model or a command.
+                    The button to view the defaults appears in the top left corner once a model is selected.
+                    Then you are able to get default values of the selected model which is located in the right column.
+                </p>
+                <p>
+                    Please feel free to drop your ideas/questions/critics/feedbacks on
+                    <a href="https://github.com/babsey/nest-web-doc" target="_blank"> Github </a>
+                </p>
+                <p>
+                    Have fun with NEST Documentation.
+                </p>
+                <p>
+                    <small>May 4th, 2018</small>
+                </p>
+        </mat-card-content>
+        </mat-card>
+        <mat-card *ngIf="selected && !progress" style="width:750px;">
+            <mat-card-title>{{ object | label }}: {{ selected }}</mat-card-title>
+            <mat-card-content class="helptext">
+                <pre>{{ helptext }}</pre>
+            </mat-card-content>
+        </mat-card>
+    </mat-sidenav-content>
 
-  <mat-sidenav #snavr role="region" [mode]="mobileQuery.matches ? 'over' : 'side'" [(opened)]="viewDefaults" position="end">
-    <h4>Default values for {{defaults.model || defaults.synapse_model }} </h4>
-    <table>
-      <tr *ngFor="let default of defaults | keys">
-        <td>{{default.key}}</td>
-        <td>{{default.value}}</td>
-      </tr>
-    </table>
-  </mat-sidenav>
+    <mat-sidenav #snavr role="region" [mode]="mobileQuery.matches ? 'over' : 'side'" [(opened)]="viewDefaults" position="end">
+        <mat-card *ngIf="selected && !progress" class="defaults">
+            <mat-card-title>
+                Default values for {{defaults.model || defaults.synapse_model }}
+            </mat-card-title>
+
+            <mat-card-content>
+                <table>
+                    <tr *ngFor="let default of defaults | keys">
+                        <td>{{default.key}}</td>
+                        <td>{{default.value}}</td>
+                    </tr>
+                </table>
+            </mat-card-content>
+        </mat-card>
+    </mat-sidenav>
 </mat-sidenav-container>

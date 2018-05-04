@@ -11,13 +11,15 @@ import { DataService } from './shared/services/data.service';
 })
 export class AppComponent implements OnInit {
     mobileQuery: MediaQueryList;
-    public height: string = '500px';
-    public title = 'NEST Documentation';
-    public selected: string = '';
+    public height: string;
+    public title: string;
+    public object: string;
+    public progress: boolean;
+    public selected: string;
     public helptext: string;
     public defaults: any = {};
-    public hasDefaults: boolean = false;
-    public viewDefaults: boolean = false;
+    public hasDefaults: boolean;
+    public viewDefaults: boolean;
 
     private _mobileQueryListener: () => void;
 
@@ -32,17 +34,23 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.title = 'NEST Documentation';
+        this.object = '';
+        this.selected = '';
+        this.defaults = {};
+        this.hasDefaults = false;
+        this.viewDefaults = false;
         this.resize()
     }
 
     resize() {
-        this.height = (window.innerHeight - document.getElementById('content')
-            .offsetTop).toString() + 'px';
+        this.height = (window.innerHeight - (this.mobileQuery.matches ? 58 : 66)).toString() + 'px';
     }
 
     changed(events) {
-        this.selected = events[0];
-        let helpOrDoc = events[1];
+        this.object = events[0];
+        this.selected = events[1];
+        let helpOrDoc = events[2];
         if (helpOrDoc == 'help') {
             var responseJSON = this._dataService.getHelp(this.selected);
         } else {
@@ -50,13 +58,21 @@ export class AppComponent implements OnInit {
         }
         var key = helpOrDoc == 'help' ? 'response' : '__doc__';
         var errorText = 'No ' + helpOrDoc + ' found.';
+
+        this.progress = true;
         responseJSON.subscribe(
             data => {
-                this.helptext = ((data['status'] == 'ok'
+                setTimeout(() => {
+                    this.progress = false;
+                    this.helptext = ((data['status'] == 'ok'
                     && key in data)
                     ? data[key] : errorText);
+                }, 1000)
             },
-            error => this.helptext = errorText
+            error => {
+                this.progress = false;
+                this.helptext = errorText;
+            }
         )
 
         if (this._dataService.modelsDefaultValues.indexOf(this.selected) == -1) {
@@ -74,6 +90,11 @@ export class AppComponent implements OnInit {
 
     ngOnDestroy(): void {
         this.mobileQuery.removeListener(this._mobileQueryListener);
+    }
+
+    clear() {
+        this.selected = '';
+        this.helptext = '';
     }
 
 }

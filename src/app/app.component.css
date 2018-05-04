@@ -1,15 +1,35 @@
-mat-sidenav {
-  background-color: rgb(250, 250, 250) !important;
-}
-
-mat-sidenav {
-  width: 350px;
-}
-
-mat-sidenav-content {
-  padding: 0 20px;
+.progress-bar, .progress-bar mat-progress-bar {
+    height: 2px;
+    background-color: #fafafa;
 }
 
 .spacer {
-  flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+
+mat-sidenav {
+    background-color: rgb(250, 250, 250) !important;
+}
+
+mat-sidenav {
+    width: 350px;
+}
+
+.content {
+    padding: 5px;
+    margin: 5px;
+}
+
+.tab-content {
+    padding: 5px;
+    margin: 10px 0;
+}
+
+.defaults {
+    padding: 5px;
+    margin: 5px;
+}
+
+.defaults mat-card-title {
+    padding: 10px 0;
 }

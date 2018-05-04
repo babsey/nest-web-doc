@@ -1,19 +1,25 @@
 <mat-form-field>
-  <mat-select placeholder="Interface" [(value)]="interface" (change)="getCommands()">
-    <mat-option value="SLI">SLI</mat-option>
-    <mat-option value="PyNEST">PyNEST</mat-option>
-    <mat-option value="PyNEST_topology">PyNEST Topology</mat-option>
-  </mat-select>
+    <mat-select placeholder="Interface" [(value)]="interface" (change)="getCommands()">
+        <mat-option value="SLI">SLI</mat-option>
+        <mat-option value="PyNEST">PyNEST</mat-option>
+        <mat-option value="PyNEST_topology">PyNEST Topology</mat-option>
+    </mat-select>
 </mat-form-field>
-
 
 <mat-form-field>
-  <input matInput type="text" [(ngModel)]="filterTerm" placeholder="Filter commands">
+    <i matPrefix class="material-icons">filter_list</i>
+    <input matInput type="text" [(ngModel)]="filterCommands" placeholder="Filter commands">
+    <button mat-button *ngIf="filterCommands" matSuffix mat-icon-button aria-label="Clear" (click)="filterCommands=''">
+        <mat-icon>close</mat-icon>
+    </button>
 </mat-form-field>
 
-<mat-nav-list>
-  <a mat-list-item *ngFor="let command of commands | filterCommands : filterTerm" (click)="onClick(command[0])"
-   matTooltip="{{command[1]}}" matTooltipPosition="after">
-  {{ command[0] }}
-</a>
-</mat-nav-list>
+<mat-card>
+    <mat-card-content>
+        <mat-nav-list>
+            <a mat-list-item *ngFor="let command of commands | filterCommands: filterCommands" (click)="onClick(command[0])" matTooltip="{{command[1]}}" matTooltipPosition="after">
+                {{ command[0] }}
+            </a>
+        </mat-nav-list>
+    </mat-card-content>
+</mat-card>

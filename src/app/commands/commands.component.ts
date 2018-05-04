@@ -12,7 +12,7 @@ export class CommandsComponent implements OnInit {
     @Output() selectedChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     public interface: string = 'SLI';
     public commands: any[] = [];
-    public filterTerm: string;
+    public filterCommands: string;
 
 
     constructor(private _dataService: DataService) {
@@ -43,7 +43,7 @@ export class CommandsComponent implements OnInit {
 
     onClick(selected) {
         this.selected = selected;
-        this.selectedChange.emit([selected, this.interface == 'SLI' ? 'help' : 'doc']);
+        this.selectedChange.emit([this.interface + ' command', selected, this.interface == 'SLI' ? 'help' : 'doc']);
     }
 
 }
