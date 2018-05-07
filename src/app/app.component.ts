@@ -11,13 +11,14 @@ import { DataService } from './shared/services/data.service';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-    // @ViewChild("objectsNav") objectsNav: console.log('aa');
     mobileQuery: MediaQueryList;
     public height: string;
     public sideNavWidth: string;
     public contentHeight: string;
     public title: string;
     public object: string;
+    public models: any[];
+    public commands: any[];
     public progress: boolean;
     public selected: string;
     public helptext: string;
@@ -39,30 +40,61 @@ export class AppComponent implements OnInit {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
-    }
-
-    ngOnInit() {
         this.title = this.mobileQuery.matches ? 'NEST User Doc' : 'NEST User Documentation';
         this.object = '';
+        this.models = [];
+        this.commands = [];
         this.selected = '';
         this.defaults = {};
         this.params = [];
         this.hasParams = this.params.length > 0;
         this.viewParams = false;
-        this.resize()
     }
 
     resize() {
         var offset = this.mobileQuery.matches ? 58 : 66;
         this.height = (window.innerHeight - offset).toString() + 'px';
-        this.contentHeight = (window.innerHeight - offset - 120).toString() + 'px';
+        this.contentHeight = (window.innerHeight - offset - 100).toString() + 'px';
         this.sideNavWidth = (this.mobileQuery.matches ? window.innerWidth : 350).toString() + 'px';
     }
 
-    changed(events) {
-        this.object = events[0];
-        this.selected = events[1];
-        let helpOrDoc = events[2];
+    ngOnInit() {
+        this.resize()
+    }
+
+    getModels() {
+        // console.log('Get models')
+        if (this.models.length > 0) return
+        this._dataService.getModels('')
+            .subscribe(data => {
+                this.models = data['response'];
+            })
+    }
+
+    getCommands() {
+        // console.log('Get commands')
+        if (this.commands.length > 0) return
+        this._dataService.getCommands('SLI')
+            .subscribe(data => {
+                this.commands = data['response']
+                    .split('\n')
+                    .sort()
+                    .map((i) => {
+                        let c = i.split('\t')
+                        return [c[0], c[c.length - 1]]
+                })
+            })
+    }
+
+    onSelectChange(event) {
+        // console.log(event)
+        event.index == 0 ? this.getModels() : this.getCommands()
+    }
+
+    changed(event) {
+        this.object = event[0];
+        this.selected = event[1];
+        let helpOrDoc = event[2];
         if (helpOrDoc == 'help') {
             var responseJSON = this._dataService.getHelp(this.selected);
         } else {
@@ -94,14 +126,16 @@ export class AppComponent implements OnInit {
         } else {
             this._dataService.getDefaults(this.selected)
                 .subscribe(data => {
-                    this.defaults = data['response'];
-                    let params = [];
-                    for (let key in this.defaults) {
-                        params.push({ name: key, value: JSON.stringify(this.defaults[key]) });
-                    }
-                    this.params = new MatTableDataSource(params);
-                    this.params.sort = this.sort;
-                    this.hasParams = params.length > 0;
+                    setTimeout(() => {
+                        this.defaults = data['response'];
+                        let params = [];
+                        for (let key in this.defaults) {
+                            params.push({ name: key, value: JSON.stringify(this.defaults[key]) });
+                        }
+                        this.params = new MatTableDataSource(params);
+                        this.params.sort = this.sort;
+                        this.hasParams = params.length > 0;
+                    }, 500)
                 })
         }
     }

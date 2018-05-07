@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { DataService } from '../shared/services/data.service';
 
@@ -7,23 +7,20 @@ import { DataService } from '../shared/services/data.service';
     templateUrl: './commands.component.html',
     styleUrls: ['./commands.component.css']
 })
-export class CommandsComponent implements OnInit {
-    @Input() selected: string;
+export class CommandsComponent {
+    @Input() commands: any[];
     @Output() selectedChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     public interface: string;
-    public commands: any[] = [];
     public filterCommands: string;
 
 
     constructor(private _dataService: DataService) {
-    }
-
-    ngOnInit() {
+        this.commands = [];
         this.interface = 'SLI';
-        this.getCommands()
     }
 
     getCommands() {
+        this.commands = [];
         this._dataService.getCommands(this.interface)
             .subscribe(data => {
                 if (this.interface == 'SLI') {
@@ -43,7 +40,6 @@ export class CommandsComponent implements OnInit {
     }
 
     getCommand(command) {
-        this.selected = command;
         this.selectedChange.emit([this.interface + ' command', command, this.interface == 'SLI' ? 'help' : 'doc']);
     }
 

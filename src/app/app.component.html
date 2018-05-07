@@ -3,12 +3,12 @@
 </div>
 
 <mat-toolbar color="accent">
-    <button *ngIf="!mobileQuery.matches" mat-raised-button (click)="objectsNav.toggle()">
+    <button *ngIf="!mobileQuery.matches" mat-raised-button (click)="getModels(); objectsNav.toggle()">
         <i class="material-icons" *ngIf="objectsNav.opened">chevron_left</i>
         <i class="material-icons" *ngIf="!objectsNav.opened">chevron_right</i>
         <span>Objects</span>
     </button>
-    <button *ngIf="mobileQuery.matches" mat-icon-button (click)="paramsNav.close(); objectsNav.toggle()">
+    <button *ngIf="mobileQuery.matches" mat-icon-button (click)="getModels(); paramsNav.close(); objectsNav.toggle()">
         <i class="material-icons" *ngIf="objectsNav.opened">chevron_left</i>
         <i class="material-icons" *ngIf="!objectsNav.opened">chevron_right</i>
     </button>
@@ -29,22 +29,22 @@
 <mat-sidenav-container [style.height]="height" (window:resize)="resize()">
     <mat-sidenav #objectsNav id="objects" role="region" [mode]="mobileQuery.matches ? 'over' : 'side'"
         opened="false" position="start" [style.width]="sideNavWidth">
-        <mat-tab-group>
+        <mat-tab-group (selectedTabChange)="onSelectChange($event)">
             <mat-tab label="Models">
                 <div class="tab-content">
-                    <app-models [selected]="selected" (selectedChange)="changed($event)"></app-models>
+                    <app-models [models]="models" (selectedChange)="changed($event)"></app-models>
                 </div>
             </mat-tab>
             <mat-tab label="Commands">
                 <div class="tab-content">
-                    <app-commands [selected]="selected" (selectedChange)="changed($event)"></app-commands>
+                    <app-commands [commands]="commands" (selectedChange)="changed($event)"></app-commands>
                 </div>
             </mat-tab>
         </mat-tab-group>
     </mat-sidenav>
 
     <mat-sidenav-content id="content">
-        <mat-card *ngIf="!selected" style="max-width:450px;">
+        <mat-card *ngIf="!selected" class="introduction">
             <mat-card-title>An online documentation for the NEST simulator</mat-card-title>
             <mat-card-content>
                 <a href="http://www.nest-simulator.org/" target="_blank">
@@ -77,25 +77,27 @@
 
     <mat-sidenav #paramsNav role="region" id="params" [mode]="mobileQuery.matches ? 'over' : 'side'"
         [(opened)]="viewParams" position="end" [style.width]="sideNavWidth">
-        <h2>Default parameters for {{ defaults.model || defaults.synapse_model }}</h2>
+        <div *ngIf="!progress">
+            <h2>Default parameters for {{ defaults.model || defaults.synapse_model }}</h2>
 
-        <table mat-table #paramsTable [dataSource]="params" matSort>
+            <table mat-table #paramsTable [dataSource]="params" matSort>
 
-            <!-- Key Column -->
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Parameter </th>
-              <td mat-cell *matCellDef="let param"> {{ param.name }} </td>
-            </ng-container>
+                <!-- Key Column -->
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Parameter </th>
+                  <td mat-cell *matCellDef="let param"> {{ param.name }} </td>
+                </ng-container>
 
-            <!-- Value Column -->
-            <ng-container matColumnDef="value">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Value </th>
-              <td mat-cell *matCellDef="let param"> {{ param.value }} </td>
-            </ng-container>
+                <!-- Value Column -->
+                <ng-container matColumnDef="value">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Value </th>
+                  <td mat-cell *matCellDef="let param"> {{ param.value }} </td>
+                </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let params; columns: displayedColumns"></tr>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let params; columns: displayedColumns"></tr>
 
-        </table>
+            </table>
+        </div>
     </mat-sidenav>
 </mat-sidenav-container>
