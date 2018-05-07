@@ -1,35 +1,41 @@
-.progress-bar, .progress-bar mat-progress-bar {
+.progress-bar,
+.progress-bar mat-progress-bar {
     height: 2px;
-    background-color: #fafafa;
+    background-color: rgb(250, 250, 250);
 }
 
 .spacer {
     flex: 1 1 auto;
 }
 
+#content {
+    padding: 10px;
+}
+
 mat-sidenav {
     background-color: rgb(250, 250, 250) !important;
 }
 
-mat-sidenav {
-    width: 350px;
-}
-
-.content {
-    padding: 5px;
-    margin: 5px;
-}
-
-.tab-content {
+#objects .tab-content {
     padding: 5px;
     margin: 10px 0;
 }
 
-.defaults {
-    padding: 5px;
-    margin: 5px;
+#params h2 {
+    margin: 10px;
+    font-size: 18px;
+    font-weight: 400;
 }
 
-.defaults mat-card-title {
-    padding: 10px 0;
+#params .mat-table {
+    background-color: rgb(250, 250, 250);
+    width: 100%;
+}
+
+#params .mat-table td {
+    padding: 0 12px;
+}
+
+.helptext mat-card-content {
+    overflow: auto;
 }

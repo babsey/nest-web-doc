@@ -1,5 +1,6 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource, MatSort } from '@angular/material';
 
 import { DataService } from './shared/services/data.service';
 
@@ -10,16 +11,23 @@ import { DataService } from './shared/services/data.service';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+    // @ViewChild("objectsNav") objectsNav: console.log('aa');
     mobileQuery: MediaQueryList;
     public height: string;
+    public sideNavWidth: string;
+    public contentHeight: string;
     public title: string;
     public object: string;
     public progress: boolean;
     public selected: string;
     public helptext: string;
-    public defaults: any = {};
-    public hasDefaults: boolean;
-    public viewDefaults: boolean;
+    public defaults: any;
+    public params: any;
+    public hasParams: boolean;
+    public viewParams: boolean;
+    displayedColumns = ['name', 'value'];
+
+    @ViewChild(MatSort) sort: MatSort;
 
     private _mobileQueryListener: () => void;
 
@@ -34,17 +42,21 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.title = 'NEST Documentation';
+        this.title = this.mobileQuery.matches ? 'NEST User Doc' : 'NEST User Documentation';
         this.object = '';
         this.selected = '';
         this.defaults = {};
-        this.hasDefaults = false;
-        this.viewDefaults = false;
+        this.params = new MatTableDataSource([]);
+        this.hasParams = false;
+        this.viewParams = false;
         this.resize()
     }
 
     resize() {
-        this.height = (window.innerHeight - (this.mobileQuery.matches ? 58 : 66)).toString() + 'px';
+        var offset = this.mobileQuery.matches ? 58 : 66;
+        this.height = (window.innerHeight - offset).toString() + 'px';
+        this.contentHeight = (window.innerHeight - offset - 120).toString() + 'px';
+        this.sideNavWidth = (this.mobileQuery.matches ? window.innerWidth : 350).toString() + 'px';
     }
 
     changed(events) {
@@ -65,8 +77,8 @@ export class AppComponent implements OnInit {
                 setTimeout(() => {
                     this.progress = false;
                     this.helptext = ((data['status'] == 'ok'
-                    && key in data)
-                    ? data[key] : errorText);
+                        && key in data)
+                        ? data[key] : errorText);
                 }, 1000)
             },
             error => {
@@ -76,14 +88,19 @@ export class AppComponent implements OnInit {
         )
 
         if (this._dataService.modelsDefaultValues.indexOf(this.selected) == -1) {
-            this.defaults = {};
-            this.hasDefaults = false;
-            this.viewDefaults = false;
+            this.params = new MatTableDataSource([]);
+            this.viewParams = false;
         } else {
             this._dataService.getDefaults(this.selected)
                 .subscribe(data => {
                     this.defaults = data['response'];
-                    this.hasDefaults = true;
+                    let params = [];
+                    for (let key in this.defaults) {
+                        params.push({ name: key, value: JSON.stringify(this.defaults[key]) });
+                    }
+                    this.params = new MatTableDataSource(params);
+                    this.params.sort = this.sort;
+                    this.hasParams = true;
                 })
         }
     }

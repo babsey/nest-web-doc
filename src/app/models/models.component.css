@@ -2,14 +2,6 @@ mat-form-field {
   width: 100%;
 }
 
-mat-card {
-    padding: 0;
-}
-
-mat-card-content {
-    overflow-x: hidden;
-}
-
 mat-nav-list {
     padding-top: 0;
 }

@@ -13,6 +13,7 @@ import {
     MatProgressBarModule,
     MatSelectModule,
     MatSidenavModule,
+    MatTableModule,
     MatTabsModule,
     MatTooltipModule,
     MatToolbarModule,
@@ -20,7 +21,6 @@ import {
 
 import { DataService } from './shared/services/data.service';
 import { FilterCommandsPipe, FilterModelsPipe } from './shared/pipes/filter.pipe';
-import { KeysPipe } from './shared/pipes/keys.pipe';
 import { LabelPipe } from './shared/pipes/label.pipe';
 
 import { AppComponent } from './app.component';
@@ -35,7 +35,6 @@ import { Configuration } from './app.constants';
         CommandsComponent,
         FilterCommandsPipe,
         FilterModelsPipe,
-        KeysPipe,
         LabelPipe,
         ModelsComponent,
     ],
@@ -52,6 +51,7 @@ import { Configuration } from './app.constants';
         MatProgressBarModule,
         MatSelectModule,
         MatSidenavModule,
+        MatTableModule,
         MatTabsModule,
         MatTooltipModule,
         MatToolbarModule,

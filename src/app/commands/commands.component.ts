@@ -42,9 +42,9 @@ export class CommandsComponent implements OnInit {
             })
     }
 
-    onClick(selected) {
-        this.selected = selected;
-        this.selectedChange.emit([this.interface + ' command', selected, this.interface == 'SLI' ? 'help' : 'doc']);
+    getCommand(command) {
+        this.selected = command;
+        this.selectedChange.emit([this.interface + ' command', command, this.interface == 'SLI' ? 'help' : 'doc']);
     }
 
 }

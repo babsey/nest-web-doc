@@ -2,7 +2,7 @@
     <mat-select placeholder="Interface" [(value)]="interface" (selectionChange)="getCommands()">
         <mat-option value="SLI">SLI</mat-option>
         <mat-option value="PyNEST">PyNEST</mat-option>
-        <mat-option value="PyNEST_topology">PyNEST Topology</mat-option>
+        <mat-option value="PyNEST_topology">PyNEST topology</mat-option>
     </mat-select>
 </mat-form-field>
 
@@ -14,12 +14,8 @@
     </button>
 </mat-form-field>
 
-<mat-card>
-    <mat-card-content>
-        <mat-nav-list>
-            <a mat-list-item *ngFor="let command of commands | filterCommands: filterCommands" (click)="onClick(command[0])" matTooltip="{{command[1]}}" matTooltipPosition="after">
-                {{ command[0] }}
-            </a>
-        </mat-nav-list>
-    </mat-card-content>
-</mat-card>
+<mat-nav-list>
+    <a mat-list-item *ngFor="let command of commands | filterCommands: filterCommands" (click)="getCommand(command[0])" matTooltip="{{command[1]}}" matTooltipPosition="after">
+        {{ command[0] }}
+    </a>
+</mat-nav-list>

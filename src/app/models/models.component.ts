@@ -31,9 +31,9 @@ export class ModelsComponent implements OnInit {
             })
     }
 
-    onClick(selected) {
-        this.selected = selected;
-        this.selectedChange.emit(['Model', this.selected, 'help']);
+    getModel(model) {
+        this.selected = model;
+        this.selectedChange.emit(['Model', model, 'help']);
     }
 
 }
