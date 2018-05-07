@@ -46,8 +46,8 @@ export class AppComponent implements OnInit {
         this.object = '';
         this.selected = '';
         this.defaults = {};
-        this.params = new MatTableDataSource([]);
-        this.hasParams = false;
+        this.params = [];
+        this.hasParams = this.params.length > 0;
         this.viewParams = false;
         this.resize()
     }
@@ -88,7 +88,8 @@ export class AppComponent implements OnInit {
         )
 
         if (this._dataService.modelsDefaultValues.indexOf(this.selected) == -1) {
-            this.params = new MatTableDataSource([]);
+            this.params = [];
+            this.hasParams = this.params.length > 0;
             this.viewParams = false;
         } else {
             this._dataService.getDefaults(this.selected)
@@ -100,7 +101,7 @@ export class AppComponent implements OnInit {
                     }
                     this.params = new MatTableDataSource(params);
                     this.params.sort = this.sort;
-                    this.hasParams = true;
+                    this.hasParams = params.length > 0;
                 })
         }
     }
