@@ -63,8 +63,8 @@ export class AppComponent implements OnInit {
     }
 
     getModels() {
-        // console.log('Get models')
         if (this.models.length > 0) return
+        console.log('Get models')
         this._dataService.getModels('')
             .subscribe(data => {
                 this.models = data['response'];
@@ -72,8 +72,8 @@ export class AppComponent implements OnInit {
     }
 
     getCommands() {
-        // console.log('Get commands')
         if (this.commands.length > 0) return
+        console.log('Get commands')
         this._dataService.getCommands('SLI')
             .subscribe(data => {
                 this.commands = data['response']
@@ -86,9 +86,9 @@ export class AppComponent implements OnInit {
             })
     }
 
-    onSelectChange(event) {
-        // console.log(event)
-        event.index == 0 ? this.getModels() : this.getCommands()
+    onSelectChange() {
+        this.getModels()
+        this.getCommands()
     }
 
     changed(event) {

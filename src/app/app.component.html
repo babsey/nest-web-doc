@@ -29,7 +29,7 @@
 <mat-sidenav-container [style.height]="height" (window:resize)="resize()">
     <mat-sidenav #objectsNav id="objects" role="region" [mode]="mobileQuery.matches ? 'over' : 'side'"
         opened="false" position="start" [style.width]="sideNavWidth">
-        <mat-tab-group (selectedTabChange)="onSelectChange($event)">
+        <mat-tab-group (animationDone)="objectsNav.opened ? onSelectChange() : ''">
             <mat-tab label="Models">
                 <div class="tab-content">
                     <app-models [models]="models" (selectedChange)="changed($event)"></app-models>
