@@ -74,15 +74,11 @@ export class AppComponent implements OnInit {
     getCommands() {
         if (this.commands.length > 0) return
         console.log('Get commands')
-        this._dataService.getCommands('SLI')
+        this._dataService.getCommands('PyNEST')
             .subscribe(data => {
                 this.commands = data['response']
-                    .split('\n')
                     .sort()
-                    .map((i) => {
-                        let c = i.split('\t')
-                        return [c[0], c[c.length - 1]]
-                })
+                    .map((i) => [i.split('\t')[0], ''])
             })
     }
 

@@ -16,7 +16,7 @@ export class CommandsComponent {
 
     constructor(private _dataService: DataService) {
         this.commands = [];
-        this.interface = 'SLI';
+        this.interface = 'PyNEST';
     }
 
     getCommands() {
