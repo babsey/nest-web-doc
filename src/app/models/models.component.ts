@@ -24,7 +24,7 @@ export class ModelsComponent {
         this.models = [];
         this._dataService.getModels(this.mtype)
             .subscribe(data => {
-                this.models = data['response'];
+                this.models = data['response']['data'];
             })
     }
 

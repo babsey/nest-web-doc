@@ -24,7 +24,7 @@ export class CommandsComponent {
         this._dataService.getCommands(this.interface)
             .subscribe(data => {
                 if (this.interface == 'SLI') {
-                    this.commands = data['response']
+                    this.commands = data['response']['data']
                         .split('\n')
                         .sort()
                         .map((i) => {
@@ -32,7 +32,7 @@ export class CommandsComponent {
                             return [c[0], c[c.length - 1]]
                         })
                 } else {
-                    this.commands = data['response']
+                    this.commands = data['response']['data']
                         .sort()
                         .map((i) => [i.split('\t')[0], ''])
                 }

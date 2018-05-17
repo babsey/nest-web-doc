@@ -10,7 +10,7 @@ export class DataService {
 
     constructor(private http: HttpClient, private config: Configuration) {
         this.getModels(null).subscribe((data) => {
-            this.modelsDefaultValues = data['response'].filter((d) => d != 'sli_neuron');
+            this.modelsDefaultValues = data['response']['data'].filter((d) => d != 'sli_neuron');
         });
     }
 

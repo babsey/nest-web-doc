@@ -67,7 +67,7 @@ export class AppComponent implements OnInit {
         console.log('Get models')
         this._dataService.getModels('')
             .subscribe(data => {
-                this.models = data['response'];
+                this.models = data['response']['data'];
             })
     }
 
@@ -76,9 +76,9 @@ export class AppComponent implements OnInit {
         console.log('Get commands')
         this._dataService.getCommands('PyNEST')
             .subscribe(data => {
-                this.commands = data['response']
+                this.commands = data['response']['data']
                     .sort()
-                    .map((i) => [i.split('\t')[0], ''])
+                    .map((i) => [i.split('\t')[0], '']);
             })
     }
 
@@ -104,7 +104,7 @@ export class AppComponent implements OnInit {
             data => {
                 setTimeout(() => {
                     this.progress = false;
-                    this.helptext = ((data['status'] == 'ok'
+                    this.helptext = ((data['response']['status'] == 'ok'
                         && key in data)
                         ? data[key] : errorText);
                 }, 1000)
@@ -123,7 +123,7 @@ export class AppComponent implements OnInit {
             this._dataService.getDefaults(this.selected)
                 .subscribe(data => {
                     setTimeout(() => {
-                        this.defaults = data['response'];
+                        this.defaults = data['response']['data'];
                         let params = [];
                         for (let key in this.defaults) {
                             params.push({ name: key, value: JSON.stringify(this.defaults[key]) });
