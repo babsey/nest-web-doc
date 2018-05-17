@@ -96,17 +96,16 @@ export class AppComponent implements OnInit {
         } else {
             var responseJSON = this._dataService.getDoc(this.selected);
         }
-        var key = helpOrDoc == 'help' ? 'response' : '__doc__';
         var errorText = 'No ' + helpOrDoc + ' found.';
 
         this.progress = true;
         responseJSON.subscribe(
             data => {
+                var response = data['response'];
                 setTimeout(() => {
                     this.progress = false;
-                    this.helptext = ((data['response']['status'] == 'ok'
-                        && key in data)
-                        ? data[key] : errorText);
+                    this.helptext = ((response['status'] == 'ok')
+                        ? response['data'] : errorText);
                 }, 1000)
             },
             error => {
